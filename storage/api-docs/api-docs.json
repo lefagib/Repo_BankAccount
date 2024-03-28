@@ -1,0 +1,589 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de gestion des comptes bancaires",
+        "description": "Ceci est une API pour gérer les comptes bancaires.",
+        "contact": {
+            "name": "Nom du contact",
+            "email": "contact@exemple.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/accounts": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Get list of accounts",
+                "description": "Returns list of accounts",
+                "operationId": "getAccountsList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Account"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Create a new account",
+                "description": "Creates a new account with the provided data",
+                "operationId": "createAccount",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "balance"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the account",
+                                        "type": "string"
+                                    },
+                                    "balance": {
+                                        "description": "Initial balance of the account",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "currency": {
+                                        "description": "Currency of the account",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Account created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID of the newly created account",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        "name": {
+                                            "description": "Name of the newly created account",
+                                            "type": "string"
+                                        },
+                                        "balance": {
+                                            "description": "Initial balance of the newly created account",
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "currency": {
+                                            "description": "Currency of the newly created account",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "description": "Validation errors",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{id}": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Get account details",
+                "description": "Returns account details by ID",
+                "operationId": "getAccountById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the account",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID of the account",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        "name": {
+                                            "description": "Name of the account",
+                                            "type": "string"
+                                        },
+                                        "balance": {
+                                            "description": "Balance of the account",
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "currency": {
+                                            "description": "Currency of the account",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Edit an existing account",
+                "description": "Edits an existing account with the provided data",
+                "operationId": "editAccount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the account",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "balance"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the account",
+                                        "type": "string"
+                                    },
+                                    "balance": {
+                                        "description": "Balance of the account",
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "currency": {
+                                        "description": "Currency of the account",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Account updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID of the updated account",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        "name": {
+                                            "description": "Name of the updated account",
+                                            "type": "string"
+                                        },
+                                        "balance": {
+                                            "description": "Balance of the updated account",
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "currency": {
+                                            "description": "Currency of the updated account",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Delete an existing account",
+                "description": "Deletes an existing account",
+                "operationId": "deleteAccount",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the account",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Account deleted successfully"
+                    },
+                    "404": {
+                        "description": "Account not found"
+                    }
+                }
+            }
+        },
+        "/clients/{id}": {
+            "get": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Get client details",
+                "description": "Returns client details by ID",
+                "operationId": "getClientById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Client ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Client"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Edit an existing client",
+                "description": "Edits an existing client with the provided data",
+                "operationId": "editClient",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the client",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the client",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Email of the client",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "phone": {
+                                        "description": "Phone number of the client",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "Address of the client",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Client updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID of the updated client",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        "name": {
+                                            "description": "Name of the updated client",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Email of the updated client",
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "phone": {
+                                            "description": "Phone number of the updated client",
+                                            "type": "string"
+                                        },
+                                        "address": {
+                                            "description": "Address of the updated client",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Delete an existing client",
+                "description": "Deletes an existing client",
+                "operationId": "deleteClient",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the client",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Client deleted successfully"
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    }
+                }
+            }
+        },
+        "/clients": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Create a new client",
+                "description": "Creates a new client with the provided data",
+                "operationId": "createClient",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the client",
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "description": "Email of the client",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "phone": {
+                                        "description": "Phone number of the client",
+                                        "type": "string"
+                                    },
+                                    "address": {
+                                        "description": "Address of the client",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Client created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID of the newly created client",
+                                            "type": "integer",
+                                            "format": "int64"
+                                        },
+                                        "name": {
+                                            "description": "Name of the newly created client",
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "description": "Email of the newly created client",
+                                            "type": "string",
+                                            "format": "email"
+                                        },
+                                        "phone": {
+                                            "description": "Phone number of the newly created client",
+                                            "type": "string"
+                                        },
+                                        "address": {
+                                            "description": "Address of the newly created client",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Error message",
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "description": "Validation errors",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Account": {
+                "title": "Account",
+                "description": "Account object",
+                "properties": {
+                    "id": {
+                        "description": "ID of the account",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "Name of the account",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Client": {
+                "title": "Client",
+                "description": "Client object",
+                "properties": {
+                    "id": {
+                        "description": "ID of the client",
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "description": "Name of the client",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
